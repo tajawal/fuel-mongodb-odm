@@ -38,6 +38,8 @@
 
 namespace Mongo_Odm;
 
+use \MongoCursorException;
+
 class Collection implements \Iterator, \Countable {
 	const ASC = 1;
 	const DESC = -1;
