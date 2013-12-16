@@ -2,7 +2,7 @@
 return array(
 	'email' => array(
 		'hostname'  => '10.26.135.253',
-		'port'      => 27017,
+		'port'      => 27018,
 		'database'  => 'email',
 		'username'  => '',
 		'password'  => '',
@@ -11,7 +11,7 @@ return array(
 	),
 	'config' => array(
 		'hostname'  => '10.26.135.253',
-		'port'      => 27017,
+		'port'      => 27018,
 		'database'  => 'config',
 		'username'  => '',
 		'password'  => '',
