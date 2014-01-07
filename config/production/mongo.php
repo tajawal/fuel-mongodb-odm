@@ -1,8 +1,8 @@
 <?php
 return array(
 	'email' => array(
-		'hostname'  => '10.1.0.1',
-		'port'      => 27018,
+		'hostname'  => '127.0.0.1',
+		'port'      => 27017,
 		'database'  => 'email',
 		'username'  => '',
 		'password'  => '',
@@ -10,8 +10,8 @@ return array(
 		'profiling' => FALSE
 	),
 	'config' => array(
-		'hostname'  => '10.1.0.1',
-		'port'      => 27018,
+		'hostname'  => '127.0.0.1',
+		'port'      => 27017,
 		'database'  => 'config',
 		'username'  => '',
 		'password'  => '',
