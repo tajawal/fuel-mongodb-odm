@@ -3,7 +3,7 @@ return array(
 	'email' => array(
 		'hostname'  => '10.26.135.253',
 		'port'      => 27017,
-		'database'  => 'email',
+		'database'  => 'email_unittests',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
@@ -12,7 +12,7 @@ return array(
 	'config' => array(
 		'hostname'  => '10.26.135.253',
 		'port'      => 27017,
-		'database'  => 'config',
+		'database'  => 'config_unittests',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
