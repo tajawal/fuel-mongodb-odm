@@ -105,8 +105,25 @@ class Database {
 		}
 		if ($config === null and ! ($config = \Config::get('mongo.'.$name)))
 		{
-			throw new \Exception('No valid configuration was provided.');
-		}
+        $cluster_list = \Lift_Lib\Database_Connection::get_cluster_list('mongo', $name);
+
+        if (empty($cluster_list))
+          throw new \Database_Exception('No mongo connections found for \'' . $name . '\'');
+
+        $db_hosts = array();
+        foreach ($cluster_list as $db_server)
+        {
+          \Log::debug('Adding \'' . $db_server['host'] . ':' . $db_server['port'] . '\' to Mongo cluster \'' . $name . '\'');
+          $db_hosts[] = $db_server['host'] . ':' . $db_server['port'];
+        }
+
+        $config = array(
+          'hosts'      => $db_hosts,
+          'database'   => $db_server['database'],
+          'username'   => $db_server['user'],
+          'password'   => $db_server['password'],
+        );
+    }
 
 		static::$instances[$name] = new static($name, $config);
 
@@ -176,7 +193,14 @@ class Database {
 		$connection_string .= "{$config['username']}:{$config['password']}@";
 	}
 	
-	$connection_string .= "{$config['hostname']}:{$config['port']}";
+  if (isset($config['hosts']) && is_array($config['hosts']))
+  {
+    $connection_string .= implode(',', $config['hosts']);
+  }
+  else
+  {
+    $connection_string .= "{$config['hostname']}:{$config['port']}";
+  }
 	
 	$connection_string .= "/{$config['database']}";
 	
