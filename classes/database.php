@@ -204,7 +204,7 @@ class Database {
 	
 	$connection_string .= "/{$config['database']}";
 	
-    $this->_connection = new \Mongo($connection_string, $options);
+    $this->_connection = new \MongoClient($connection_string, $options);
     
     // Save the database name for later use
     $this->_db = $config['database'];
