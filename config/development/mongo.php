@@ -7,7 +7,7 @@ return array(
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
-		'profiling' => FALSE
+		'profiling' => TRUE
 	),
 	'config' => array(
 		'hostname'  => '10.26.135.253',
@@ -16,7 +16,7 @@ return array(
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
-		'profiling' => FALSE
+		'profiling' => TRUE
 	)
 
 );

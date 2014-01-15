@@ -122,6 +122,7 @@ class Database {
           'database'   => $db_server['database'],
           'username'   => $db_server['user'],
           'password'   => $db_server['password'],
+          'profiling'  => true,
         );
     }
 
