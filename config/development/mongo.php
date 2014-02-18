@@ -1,7 +1,7 @@
 <?php
 return array(
 	'email' => array(
-		'hostname'  => '10.26.135.253',
+		'hostname'  => '127.0.0.1',
 		'port'      => 27017,
 		'database'  => 'email',
 		'username'  => '',
@@ -10,7 +10,7 @@ return array(
 		'profiling' => TRUE
 	),
 	'config' => array(
-		'hostname'  => '10.26.135.253',
+		'hostname'  => '127.0.0.1',
 		'port'      => 27017,
 		'database'  => 'config',
 		'username'  => '',
