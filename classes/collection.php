@@ -692,11 +692,11 @@ class Collection implements \Iterator, \Countable {
 	 */
 	public function update_safe($criteria, $update, $options = array())
 	{
-		$options = array_merge(array('safe' => TRUE, 'multiple' => FALSE, 'upsert' => FALSE), $options);
+		$options = array_merge(array('w' => 1, 'multiple' => FALSE, 'upsert' => FALSE), $options);
 		$result = $this->update($criteria, $update, $options);
 		
 		// In case 'safe' was overridden and disabled, just return the result
-		if( ! $options['safe'] ) {
+		if( isset($options['w']) && ($options['w'] === 0) ) {
 			return $result;
 		}
 		
@@ -732,11 +732,11 @@ class Collection implements \Iterator, \Countable {
 	 */
 	public function remove_safe($criteria, $options = array())
 	{
-		$options = array_merge(array('safe' => TRUE, 'justOne' => FALSE), $options);
+		$options = array_merge(array('w' => 1, 'justOne' => FALSE), $options);
 		$result = $this->remove($criteria, $options);
 
 		// In case 'safe' was overridden and disabled, just return the result
-		if( ! $options['safe']) {
+		if( isset($options['w']) && ($options['w'] === 0) ) {
 			return $result;
 		}
 		// According to the driver docs an exception should have already been thrown if there was an error, but just in case...
