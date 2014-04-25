@@ -1016,7 +1016,7 @@ abstract class Document {
         throw new \MongoException('Cannot insert empty array.');
       }
       
-      $err = $this->collection()->insert($values, $safe);
+      $err = $this->collection()->insert($values, ($safe ? ['w' => 1] : []));
 
       if( $safe && $err['err'] )
       {
