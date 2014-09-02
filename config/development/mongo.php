@@ -17,5 +17,14 @@ return array(
 		'password'  => '',
 		'options'   => array(),
 		'profiling' => TRUE
-	)
+	),
+	'avatar' => array(
+		'hostname'  => '127.0.0.1',
+		'port'      => 27017,
+		'database'  => 'avatar',
+		'username'  => '',
+		'password'  => '',
+		'options'   => array(),
+		'profiling' => TRUE
+	),
 );
