@@ -1,5 +1,6 @@
 {
 	"name": "tomschlick/mongodb-php-odm",
+	"type": "library",
 	"author": {
 		"name": "Tom Schlick",
 		"url": "http://tomschlick.com/"
@@ -21,6 +22,5 @@
 		"classmap": [
 			"classes/"
 		]
-	},
-	"minimum-stability": "dev"
+	}
 }
