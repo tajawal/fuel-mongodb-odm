@@ -105,7 +105,7 @@ class Database {
 		}
 		if ($config === null and ! ($config = \Config::get('mongo.'.$name)))
 		{
-        $cluster_list = \Lift_Lib\Database_Connection::get_cluster_list('mongo', $name);
+        $cluster_list = \Lift\Db\Database_Connection::get_cluster_list('mongo', $name);
 
         if (empty($cluster_list))
           throw new \Database_Exception('No mongo connections found for \'' . $name . '\'');
