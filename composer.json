@@ -1,31 +1,4 @@
 {
-	"name": "tomschlick/mongodb-php-odm",
-	"type": "library",
-	"author": {
-		"name": "Tom Schlick",
-		"url": "http://tomschlick.com/"
-	},
-	"license": "BSD",
-	"description": "MongoDb PHP ODM is a simple object wrapper for the Mongo PHP driver classes which makes using Mongo in your PHP application more like an ORM. It is designed for use with Kohana 3 but will integrate equally well with any PHP application.",
-	"keywords": [
-		"mongodb",
-		"mongo",
-		"php",
-		"odm",
-		"kohana"
-	],
-	"homepage": "https://github.com/tomschlick/mongodb-php-odm",
-	"bugs": {
-		"url": "https://github.com/tomschlick/mongodb-php-odm/issues"
-	},
-	"autoload": {
-		"classmap": [
-			"classes/"
-		]
-	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "1.0.0"
-		}
-	}
+    "name": "lift/mongo_odm",
+    "type": "fuel-package"
 }
