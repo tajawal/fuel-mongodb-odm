@@ -27,4 +27,13 @@ return array(
 		'options'   => array(),
 		'profiling' => TRUE
 	),
+	'feedback' => array(
+		'hostname'  => 'localhost',
+		'port'      => 27017,
+		'database'  => 'feedback',
+		'username'  => '',
+		'password'  => '',
+		'options'   => array(),
+		'profiling' => TRUE
+	),
 );
