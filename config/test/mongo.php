@@ -18,7 +18,7 @@ return array(
 		'options'   => array(),
 		'profiling' => FALSE
 	),
-	'feedback' => array(
+	'reports' => array(
 		'hostname'  => 'localhost',
 		'port'      => 27017,
 		'database'  => 'feedback_unittests',
