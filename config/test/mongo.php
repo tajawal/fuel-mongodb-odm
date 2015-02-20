@@ -1,30 +1,48 @@
 <?php
 return array(
 	'message' => array(
-		'hostname'  => 'localhost',
+		'hostname'  => '127.0.0.1',
 		'port'      => 27017,
-		'database'  => 'message_unittests',
+		'database'  => 'message',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
-		'profiling' => FALSE
+		'profiling' => TRUE
+	),
+	'email' => array(
+		'hostname'  => '127.0.0.1',
+		'port'      => 27017,
+		'database'  => 'email',
+		'username'  => '',
+		'password'  => '',
+		'options'   => array(),
+		'profiling' => TRUE
 	),
 	'avatar' => array(
-		'hostname'  => 'localhost',
+		'hostname'  => '127.0.0.1',
 		'port'      => 27017,
-		'database'  => 'avatar_unittests',
+		'database'  => 'avatar',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
-		'profiling' => FALSE
+		'profiling' => TRUE
 	),
-	'reports' => array(
+	'feedback' => array(
 		'hostname'  => 'localhost',
 		'port'      => 27017,
-		'database'  => 'feedback_unittests',
+		'database'  => 'feedback',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
-		'profiling' => FALSE
+		'profiling' => TRUE
+	),
+	'attachment' => array(
+		'hostname'  => 'localhost',
+		'port'      => 27017,
+		'database'  => 'feedback',
+		'username'  => '',
+		'password'  => '',
+		'options'   => array(),
+		'profiling' => TRUE
 	),
 );
