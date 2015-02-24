@@ -39,7 +39,7 @@ return array(
 	'attachment' => array(
 		'hostname'  => 'localhost',
 		'port'      => 27017,
-		'database'  => 'feedback',
+		'database'  => 'attachment',
 		'username'  => '',
 		'password'  => '',
 		'options'   => array(),
