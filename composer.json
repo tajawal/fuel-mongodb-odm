@@ -1,4 +1,4 @@
 {
-    "name": "lift/mongo_odm",
+    "name": "notion/mongo_odm",
     "type": "fuel-package"
 }
