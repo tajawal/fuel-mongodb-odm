@@ -6,7 +6,7 @@
  * <code>
  *  $db = Mongo_Odm_Database::instance();
  * </code>
- * 
+ *
  * The above will assume the 'default' configuration from the APPPATH/config/mongo.php file.
  * Alternatively it may be instantiated with the name and configuration specified as arguments:
  *
@@ -105,7 +105,7 @@ class Database {
 		}
 		if ($config === null and ! ($config = \Config::get('mongo.'.$name)))
 		{
-        $cluster_list = \Lift\Db\Database_Connection::get_cluster_list('mongo', $name);
+        $cluster_list = \Notion\Db\Database_Connection::get_cluster_list('mongo', $name);
 
         if (empty($cluster_list))
           throw new \Database_Exception('No mongo connections found for \'' . $name . '\'');
@@ -182,18 +182,18 @@ class Database {
 	{
       $options = array_merge($options, $config['options']);
 	}
-	
+
     // Use the default server string if no server option is given
 	empty($config['hostname']) and $config['hostname'] = ini_get('mongo.default_host');
 	empty($config['port']) and $config['port'] = ini_get('mongo.default_port');
-	
+
 	$connection_string = "mongodb://";
-	
+
 	if ( ! empty($config['username']) and ! empty($config['password']))
 	{
 		$connection_string .= "{$config['username']}:{$config['password']}@";
 	}
-	
+
   if (isset($config['hosts']) && is_array($config['hosts']))
   {
     $connection_string .= implode(',', $config['hosts']);
@@ -202,17 +202,17 @@ class Database {
   {
     $connection_string .= "{$config['hostname']}:{$config['port']}";
   }
-	
+
 	$connection_string .= "/{$config['database']}";
-	
+
     $this->_connection = new \MongoClient($connection_string, $options);
-    
+
     // Save the database name for later use
     $this->_db = $config['database'];
 
     // Set the collection class name
     $this->_collection_class = (isset($config['collection']) ? $config['collection'] : 'Mongo_Odm_Collection');
-    
+
     // Save profiling option in a public variable
     $this->profiling = (isset($config['profiling']) && $config['profiling']);
 
@@ -242,7 +242,7 @@ class Database {
   /**
    * Force the connection to be established.
    * This will automatically be called by any MongoDB methods that are proxied via __call
-   * 
+   *
    * @return boolean
    * @throws MongoException
    */
@@ -261,7 +261,7 @@ class Database {
       {
         $this->profiler_stop($_bm);
       }
-      
+
       $this->_db = $this->_connection->selectDB("$this->_db");
     }
     return $this->_connected;
@@ -371,7 +371,7 @@ class Database {
 
   /**
    * Get a Mongo_Odm_Collection instance (wraps MongoCollection)
-   * 
+   *
    * @param  string  $name
    * @return Mongo_Odm_Collection
    */
@@ -448,9 +448,9 @@ class Database {
 
   /**
    * Set the profiler callback. Defaults to Kohana profiler.
-   * 
+   *
    * @param callback $start
-   * @param callback $stop 
+   * @param callback $stop
    */
   public function set_profiler($start, $stop)
   {
