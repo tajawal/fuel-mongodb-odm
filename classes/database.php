@@ -110,7 +110,7 @@ class Database {
         $hosts = [];
         foreach ($cluster->get_servers() as $server)
         {
-          \Log::debug('Adding \'' . $server->get_host() . ':' . $server->get_port() . '\' to Mongo cluster \'' . $index . '\'');
+          \Log::debug('Adding \'' . $server->get_host() . ':' . $server->get_port() . '\' to Mongo cluster \'' . $name . '\'');
           $hosts[] = $server->get_host() . ':' . $server->get_port();
         }
 
