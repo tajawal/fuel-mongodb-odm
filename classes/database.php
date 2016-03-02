@@ -105,23 +105,20 @@ class Database {
 		}
 		if ($config === null and ! ($config = \Config::get('mongo.'.$name)))
 		{
-        $cluster_list = \Notion\Db\Database_Connection::get_cluster_list('mongo', $name);
+        $cluster = \Notion\App\App::container()->get(\Notion\Service\Database\GetDatabaseCluster::class)->execute('mongo', $name);
 
-        if (empty($cluster_list))
-          throw new \Database_Exception('No mongo connections found for \'' . $name . '\'');
-
-        $db_hosts = array();
-        foreach ($cluster_list as $db_server)
+        $hosts = [];
+        foreach ($cluster->get_servers() as $server)
         {
-          \Log::debug('Adding \'' . $db_server['host'] . ':' . $db_server['port'] . '\' to Mongo cluster \'' . $name . '\'');
-          $db_hosts[] = $db_server['host'] . ':' . $db_server['port'];
+          \Log::debug('Adding \'' . $server->get_host() . ':' . $server->get_port() . '\' to Mongo cluster \'' . $index . '\'');
+          $hosts[] = $server->get_host() . ':' . $server->get_port();
         }
 
         $config = array(
-          'hosts'      => $db_hosts,
-          'database'   => $db_server['database'],
-          'username'   => $db_server['user'],
-          'password'   => $db_server['password'],
+          'hosts'      => $hosts,
+          'database'   => $server->get_database(),
+          'username'   => $server->get_user(),
+          'password'   => $server->get_password(),
           'profiling'  => true,
         );
     }
