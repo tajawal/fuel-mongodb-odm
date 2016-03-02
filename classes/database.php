@@ -116,7 +116,7 @@ class Database {
 
         $config = array(
           'hosts'      => $hosts,
-          'database'   => $server->get_database(),
+          'database'   => $cluster->get_name(),
           'username'   => $server->get_user(),
           'password'   => $server->get_password(),
           'profiling'  => true,
