@@ -105,7 +105,7 @@ class Database {
 		}
 		if ($config === null and ! ($config = \Config::get('mongo.'.$name)))
 		{
-        $cluster = \Notion\App\App::container()->get(\Notion\Service\Database\GetDatabaseCluster::class)->execute('mongo', $name);
+        $cluster = \Notion\App\App::container()->get(\Notion\Domain\Interactor\Database\GetDatabaseCluster::class)->execute('mongo', $name);
 
         $hosts = [];
         foreach ($cluster->get_servers() as $server)
