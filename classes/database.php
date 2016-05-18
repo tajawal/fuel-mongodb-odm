@@ -202,7 +202,7 @@ class Database {
 
 	$connection_string .= "/{$config['database']}";
 
-    $options = array_merge($options, ['socketTimeoutMS' => (\Config::get('lift.mongo.timeout') * 100)]);
+    $options = array_merge($options, ['socketTimeoutMS' => (\Config::get('lift.mongo.timeout') * 1000)]);
     $this->_connection = new \MongoClient($connection_string, $options);
 
     // Save the database name for later use
