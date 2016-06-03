@@ -155,7 +155,7 @@ abstract class Document {
 	 *
 	 * @param   string  model name
 	 * @param   mixed   optional _id of document to operate on or criteria for loading (if you expect it exists)
-	 * @return  Mongo_Odm\Document
+	 * @return  \Mongo_Odm\Document
 	 */
 	public static function factory($name, $load = NULL)
 	{
@@ -395,7 +395,7 @@ abstract class Document {
   /**
    * Return the Mongo_Odm\Database reference (proxy to the collection's db() method)
    *
-   * @return  Mongo_Odm\Database
+   * @return  \Mongo_Odm\Database
    */
   public function db()
   {
@@ -406,7 +406,7 @@ abstract class Document {
    * Get a corresponding collection singleton
    *
    * @param  boolean  $fresh  Pass TRUE if you don't want to get the singleton instance
-   * @return Mongo_Odm\Collection
+   * @return \Mongo_Odm\Collection
    */
   public function collection($fresh = FALSE)
   {
@@ -451,7 +451,7 @@ abstract class Document {
   {
     return get_class($this).'_Collection';
   }
-  
+
   /**
    * Current magic methods supported:
    *
@@ -469,7 +469,7 @@ abstract class Document {
   	{
   		return $this->_unset($arguments[0]);
   	}
-  	
+
     $parts = explode('_', $name, 2);
     if( ! isset($parts[1]))
     {
@@ -523,7 +523,7 @@ abstract class Document {
         }
         $id_field = isset($this->_references[$name]['field']) ? $this->_references[$name]['field'] : "_$name";
         $value = $this->__get($id_field);
-        
+
         if( ! empty($this->_references[$name]['multiple']))
         {
         		$this->_related_objects[$name] = Mongo_Document::factory($model)
@@ -635,7 +635,7 @@ abstract class Document {
 
   /**
    * Unset a key
-   * 
+   *
    * Note: unset() method call for _unset() is defined in __call() method since 'unset' method name
    *       is reserved in PHP. ( Requires PHP > 5.2.3. - http://php.net/manual/en/reserved.keywords.php )
    *
@@ -991,7 +991,7 @@ abstract class Document {
    * Save the document to the database. For newly created documents the _id will be retrieved.
    *
    * @param   boolean  $safe  If FALSE the insert status will not be checked
-   * @return  Mongo_Odm\Document
+   * @return  \Mongo_Odm\Document
    */
   public function save($safe = TRUE)
   {
@@ -1015,8 +1015,8 @@ abstract class Document {
       {
         throw new \MongoException('Cannot insert empty array.');
       }
-      
-      $err = $this->collection()->insert($values, ($safe ? ['w' => 1] : []));
+
+      $err = $this->collection()->__call('insert', [&$values, ($safe ? ['w' => 1] : [])]);
 
       if( $safe && $err['err'] )
       {

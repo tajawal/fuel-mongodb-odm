@@ -519,7 +519,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Is the query executed yet?
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function is_loaded()
@@ -529,7 +529,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Is the query iterating yet?
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function is_iterating()
@@ -628,7 +628,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Simple findAndModify helper
-	 * 
+	 *
 	 * @param array $command
 	 * @return array
 	 */
@@ -680,13 +680,13 @@ class Collection implements \Iterator, \Countable {
 	 * Perform an update, throw exception on errors.
 	 *
 	 * Return values depend on type of update:
-	 *   multiple     return number of documents updated on success	
-	 *   upsert       return upserted id if upsert resulted in new document	
+	 *   multiple     return number of documents updated on success
+	 *   upsert       return upserted id if upsert resulted in new document
 	 *   updatedExisting flag for all other cases
 	 *
 	 * @param array $criteria
 	 * @param array $update
-	 * @param array $options 
+	 * @param array $options
 	 * @return bool|int|MongoId
 	 * @throws MongoException on error
 	 */
@@ -694,12 +694,12 @@ class Collection implements \Iterator, \Countable {
 	{
 		$options = array_merge(array('w' => 1, 'multiple' => FALSE, 'upsert' => FALSE), $options);
 		$result = $this->update($criteria, $update, $options);
-		
+
 		// In case 'safe' was overridden and disabled, just return the result
 		if( isset($options['w']) && ($options['w'] === 0) ) {
 			return $result;
 		}
-		
+
 		// According to the driver docs an exception should have already been thrown if there was an error, but just in case...
 		if (!$result['ok'])
 		{
@@ -743,11 +743,11 @@ class Collection implements \Iterator, \Countable {
 		if( ! $result['ok']) {
 			throw new MongoException($result['err']);
 		}
-		
+
 		// Return the number of documents removed
 		return $result['n'];
 	}
-	
+
 	/**
 	 * Get an instance of the corresponding document model.
 	 *
@@ -990,7 +990,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Iterator: current
-	 * 
+	 *
 	 * @return array|Mongo_Document
 	 */
 	public function current()
@@ -1013,7 +1013,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Iterator: key
-	 * 
+	 *
 	 * @return string
 	 */
 	public function key()
@@ -1059,7 +1059,7 @@ class Collection implements \Iterator, \Countable {
 
 	/**
 	 * Iterator: valid
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function valid()
