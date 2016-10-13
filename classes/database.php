@@ -108,15 +108,13 @@ class Database {
         $cluster_filter = (new \Notion\Domain\Entity\Database\ClusterFilter)->set_local_site(true);
         $cluster = \Notion\App\App::container()->get(\Notion\Domain\Interactor\Database\GetDatabaseCluster::class)->execute('mongo', $name, $cluster_filter);
 
-        $hosts = [];
-        foreach ($cluster->get_servers() as $server)
-        {
-          \Log::debug('Adding \'' . $server->get_host() . ':' . $server->get_port() . '\' to Mongo cluster \'' . $name . '\'');
-          $hosts[] = $server->get_host() . ':' . $server->get_port();
-        }
+        $server = $cluster->get_servers()[0];
+
+        \Log::debug('Connecting to \'' . $server->get_host() . ':' . $server->get_port() . '\' in Mongo cluster \'' . $name . '\'');
 
         $config = array(
-          'hosts'      => $hosts,
+          'hostname'   => $server->get_host(),
+          'port'       => $server->get_port(),
           'database'   => $cluster->get_name(),
           'username'   => $server->get_user(),
           'password'   => $server->get_password(),
@@ -132,6 +130,14 @@ class Database {
   /** Mongo_Odm_Database instance name
    *  @var  string */
   protected $_name;
+
+  /** Mongo_Odm_Database hostname
+   *  @var  string */
+  protected $_hostname;
+
+  /** Mongo_Odm_Database port number
+   *  @var  string */
+  protected $_port;
 
   /** Connection state
    *  @var  boolean */
@@ -199,6 +205,8 @@ class Database {
   else
   {
     $connection_string .= "{$config['hostname']}:{$config['port']}";
+    $this->_hostname = $config['hostname'];
+    $this->_port = $config['port'];
   }
 
 	$connection_string .= "/{$config['database']}";
@@ -279,6 +287,21 @@ class Database {
       $this->_db = "$this->_db";
     }
     return $this->_connected;
+  }
+
+  public function get_db_name()
+  {
+    return $this->_name;
+  }
+
+  public function get_hostname()
+  {
+    return $this->_hostname;
+  }
+
+  public function get_port()
+  {
+    return $this->_port;
   }
 
   /**

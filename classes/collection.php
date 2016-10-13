@@ -157,7 +157,15 @@ class Collection implements \Iterator, \Countable {
 				$bm = $this->db()->profiler_start("Mongo_Odm\Database::$this->db", "db.$this->name.$name(" . implode(',', $json_arguments) . ")");
 			}
 
-			$return = call_user_func_array(array($this->collection(), $name), $arguments);
+			try
+			{
+				$return = call_user_func_array(array($this->collection(), $name), $arguments);
+			}
+			catch (\MongoConnectionException $exception)
+			{
+				\Notion\App\App::container()->get(\Notion\Domain\Interactor\Database\ReportProblem::class)->execute('mongo', $this->db()->get_db_name(), $this->db()->get_hostname(), $this->db()->get_port(), $exception);
+				throw $exception;
+			}
 
 			if (isset($bm))
 			{
