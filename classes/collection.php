@@ -163,7 +163,7 @@ class Collection implements \Iterator, \Countable {
 			}
 			catch (\MongoConnectionException $exception)
 			{
-				\Notion\App\App::container()->get(\Notion\Domain\Interactor\Database\ReportServerProblem::class)->execute('mongo', $this->db()->get_db_name(), $this->db()->get_hostname(), $this->db()->get_port(), $exception);
+				\Notion\App\App::container()->get(\Notion\Domain\Interactor\Database\ReportServerProblem::class)->execute('mongo', $this->db()->get_hostname(), $this->db()->get_port(), $exception);
 				throw $exception;
 			}
 
