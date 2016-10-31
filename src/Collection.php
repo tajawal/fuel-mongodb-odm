@@ -187,6 +187,7 @@ class Collection implements \Iterator, \Countable
             $this->name   = $name;
             $this->gridFS = $gridFS;
         }
+
         if ($model) {
             $this->_model = $model;
         }
@@ -635,7 +636,7 @@ class Collection implements \Iterator, \Countable
         } catch (MongoException $e) {
             throw new \MongoException("{$e->getMessage()}: {$this->inspect()}", $e->getCode());
         }
-
+        
         // Add cursor options
         foreach ($this->_options as $key => $value) {
             if ($value === null)
