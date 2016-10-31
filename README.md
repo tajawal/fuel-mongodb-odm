@@ -1,12 +1,12 @@
-h1. Mongodb ODM
+## Mongodb ODM
 
-This is a port of Colin Mollenhour's "Mongodb PHP ODM":https://github.com/colinmollenhour/mongodb-php-odm from Kohana to Fuelphp
+This is a port of Colin Mollenhour's "Mongodb PHP ODM":https://github.com/colinmollenhour/mongodb-php-odm
 
-h2. Overview
+### Overview
 
 Mongodb ODM is a simple object wrapper for the Mongo PHP driver classes which makes using Mongo in your PHP application more like ORM, but _without_ the suck.
 
-h2. Design Principles
+### Design Principles
 
 * *Don't become overly complex.* There are some features that could be implemented, but if they are not it is because they would increase the complexity too much, sacrificing elegance and usability.
 * *Keep Mongo schema-less.* I like schema-less. Requiring schema's in your model definitions is not schema-less. This library let's you be schema-less.
@@ -14,31 +14,31 @@ h2. Design Principles
 * *Do not add unnecessary overhead.* Sure, it is not as fast as using the driver directly, but I'm quite sure you won't notice the difference.
 * *Don't Repeat Yourself.* Very little code will be repeated while using this library.
 * *Reduce the number of database requests/updates.* Prevent redundant requests and multiple updates to the same document.
-* *Choose your favorite design pattern.* This library now supports using Mongo_Orm_Collection directly as a convenience wrapper, or choose between two ActiveRecord like patterns that resemble either the "Table Data Gateway pattern":http://www.martinfowler.com/eaaCatalog/tableDataGateway.html or the "Row Data Gateway pattern":http://www.martinfowler.com/eaaCatalog/rowDataGateway.html
+* *Choose your favorite design pattern.* This library now supports using MongoOdm\Collection directly as a convenience wrapper, or choose between two ActiveRecord like patterns that resemble either the "Table Data Gateway pattern":http://www.martinfowler.com/eaaCatalog/tableDataGateway.html or the "Row Data Gateway pattern":http://www.martinfowler.com/eaaCatalog/rowDataGateway.html
 
-h2. Basic Idea
+### Basic Idea
 
 The basic idea is to boil the usage of the Mongo PHP library down to three classes:
-* [[Mongo_Orm_Database]]
-* [[Mongo_Orm_Collection]]
-* [[Mongo_Orm_Document]]
+* [[MongoOdm\Database]]
+* [[MongoOdm\Collection]]
+* [[MongoOdm\Document]]
 
-h3. [[Mongo_Orm_Database]]
+#### [[MongoOdm\Database]]
 
 This class encapsulates the functionality of the Mongo connection and the Mongodb class into one since in most cases an application will interface with only one database. Interfacing with more than one database is still possible, but they will not share a single connection. Features afforded by this class:
 * Configurations are described with names such as 'default'.
 * Database names are never used in your code other than when supplying the configuration the first time. Easily deploy the same application on different database names.
 * Lazy database connections.
 
-h3. [[Mongo_Orm_Collection]]
+#### [[MongoOdm\Collection]]
 
 This class accomplishes the following:
-* Allows query results to be accessed as an iterator of models rather than arrays when used in conjunction with Mongo_Orm_Document.
+* Allows query results to be accessed as an iterator of models rather than arrays when used in conjunction with MongoOdm\Document.
 * Combines the functionality of MongoCollection, MongoGridFS and MongoCursor into one base class.
 * Allows query building by aggregating query parameters, cursor options, requested fields, etc..
 * Debugging can be made easier by using the @__toString()@ method to get a string representing the full query, again mimicking the syntax of the Mongodb shell.
 
-h3. [[Mongo_Orm_Document]]
+#### [[MongoOdm\Document]]
 
 This class objectifies a document (or row) in the database. Extend the base class for each of your data models, typically one per collection and enjoy some very simple CRUD operations with niceties like:
 * @before_*@ and @after_*@ methods for you to implement for transparently added functionality such as updating timestamps, validation, etc..

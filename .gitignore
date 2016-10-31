@@ -1,4 +1,9 @@
-.svn
-
-
-*.tmproj
+*.phar
+*.zip
+.idea
+.DS_Store
+.swp
+.build
+composer.lock
+vendor
+src/package.xml
