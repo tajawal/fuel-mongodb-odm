@@ -3,13 +3,20 @@
 namespace Tajawal\MongoOdm;
 
 use Exception;
-use MongoCollection;
+use MongoDB\BulkWriteResult;
+use MongoDB\Collection as MongoCollection;
 use MongoConnectionException;
 use MongoCursor;
 use MongoCursorException;
 use MongoDB\BSON\Javascript;
+use MongoDB\DeleteResult;
+use MongoDB\InsertManyResult;
+use MongoDB\InsertOneResult;
+use MongoDB\Model\IndexInfoIterator;
+use MongoDB\UpdateResult;
 use MongoException;
 use MongoDB\BSON\ObjectID;
+use Traversable;
 
 /**
  * This class can be used in any of the following ways:
@@ -46,24 +53,42 @@ use MongoDB\BSON\ObjectID;
  * $posts->sort_desc('published')->limit(10)->as_array(); // array of Model_Post
  * </code>
  *
- * @method mixed batchInsert(array $a, array $options = [])
+ * @method Traversable aggregate(array $pipeline, array $options = [])
+ * @method BulkWriteResult bulkWrite(array $operations, array $options = [])
+ * @method string createIndex($key, array $options = [])
+ * @method string[] createIndexes(array $indexes)
+ * @method DeleteResult deleteMany($filter, array $options = [])
+ * @method DeleteResult deleteOne($filter, array $options = [])
+ * @method mixed[] distinct($fieldName, $filter = [], array $options = [])
+ * @method array|object drop(array $options = [])
+ * @method array|object dropIndex($indexName, array $options = [])
+ * @method array|object dropIndexes(array $options = [])
+ * @method object|null findOneAndDelete($filter, array $options = [])
+ * @method object|null findOneAndReplace($filter, $replacement, array $options = [])
+ * @method object|null findOneAndUpdate($filter, $update, array $options = [])
+ * @method string getCollectionName()
+ * @method string getDatabaseName()
+ * @method string getNamespace()
+ * @method InsertManyResult insertMany(array $documents, array $options = [])
+ * @method InsertOneResult insertOne($document, array $options = [])
+ * @method IndexInfoIterator listIndexes(array $options = [])
+ * @method UpdateResult replaceOne($filter, $replacement, array $options = [])
+ * @method UpdateResult updateMany($filter, $update, array $options = [])
+ * @method UpdateResult updateOne($filter, $update, array $options = [])
+ * @method MongoCollection withOptions(array $options = [])
  * @method array createDBRef(array $a)
  * @method array deleteIndex(mixed $keys)
  * @method array deleteIndexes()
- * @method array drop()
  * @method bool ensureIndex(mixed $keys, array $options = [])
  * @method array getDBRef(array $ref)
  * @method array getIndexInfo()
- * @method string getName()
  * @method array getReadPreference()
  * @method bool getSlaveOkay()
  * @method array group(mixed $keys, array $initial, Javascript $reduce, array $options = [])
  * @method bool|array insert(array $data, array $options = [])
- * @method bool|array remove(array $criteria = [], array $options = [])
  * @method mixed save(array $a, array $options = [])
  * @method bool setReadPreference(int $read_preference, array $tags = [])
  * @method bool setSlaveOkay(bool $ok = true)
- * @method bool|array update(array $criteria, array $new_object, array $options = [])
  * @method array validate(bool $scan_data = false)
  *
  * @author  Colin Mollenhour
@@ -735,7 +760,7 @@ class Collection implements \Iterator, \Countable
     public function update_safe($criteria, $update, $options = [])
     {
         $options = array_merge(['w' => 1, 'multiple' => false, 'upsert' => false], $options);
-        $result  = $this->update($criteria, $update, $options);
+        $result  = $this->updateOne($criteria, $update, $options);
 
         // In case 'safe' was overridden and disabled, just return the result
         if (isset($options['w']) && ($options['w'] === 0)) {
@@ -771,7 +796,7 @@ class Collection implements \Iterator, \Countable
     public function remove_safe($criteria, $options = [])
     {
         $options = array_merge(['w' => 1, 'justOne' => false], $options);
-        $result  = $this->remove($criteria, $options);
+        $result  = $this->deleteOne($criteria, $options);
 
         // In case 'safe' was overridden and disabled, just return the result
         if (isset($options['w']) && ($options['w'] === 0)) {

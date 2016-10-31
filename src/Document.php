@@ -1032,7 +1032,7 @@ abstract class Document
             // Save any additional operations
             /** @todo  Combine operations into the insert when possible to avoid this update */
             if ($this->_operations) {
-                if (!$this->collection()->update(['_id' => $this->_object['_id']], $this->_operations)) {
+                if (!$this->collection()->updateOne(['_id' => $this->_object['_id']], $this->_operations)) {
                     $err = $this->db()->lastError();
                     throw new MongoException('Update of ' . get_class($this) . ' failed: ' . $err['err']);
                 }
@@ -1051,7 +1051,7 @@ abstract class Document
             }
 
             if ($this->_operations) {
-                if (!$this->collection()->update(['_id' => $this->_object['_id']], $this->_operations)) {
+                if (!$this->collection()->updateOne(['_id' => $this->_object['_id']], $this->_operations)) {
                     $err = $this->db()->lastError();
                     throw new MongoException('Update of ' . get_class($this) . ' failed: ' . $err['err']);
                 }
@@ -1142,7 +1142,7 @@ abstract class Document
 
         $operations = self::array_merge_recursive_distinct($this->_operations, $operations);
 
-        if (!$this->collection()->update($this->_object, $operations, ['upsert' => true])) {
+        if (!$this->collection()->updateOne($this->_object, $operations, ['upsert' => true])) {
             $err = $this->db()->lastError();
             throw new MongoException('Upsert of ' . get_class($this) . ' failed: ' . $err['err']);
         }
@@ -1169,7 +1169,7 @@ abstract class Document
         $this->before_delete();
         $criteria = ['_id' => $this->_object['_id']];
 
-        if (!$this->collection()->remove($criteria, ['justOne' => true])) {
+        if (!$this->collection()->deleteOne($criteria, ['justOne' => true])) {
             throw new MongoException('Failed to delete ' . get_class($this));
         }
 
