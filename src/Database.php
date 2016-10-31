@@ -3,9 +3,9 @@
 namespace Tajawal\MongoOdm;
 
 use Exception;
-use MongoClient;
-use MongoCode;
-use MongoCollection;
+use MongoDB\Client;
+use MongoDB\BSON\Javascript;
+use MongoDB\Collection as MongoCollection;
 use MongoDB;
 use MongoException;
 
@@ -13,7 +13,7 @@ use MongoException;
  * This class wraps the functionality of Mongo (connection) and MongoDB (database object) into one class.
  *
  * <code>
- *  $db = Database::instance();
+ *      $db = Database::instance();
  * </code>
  *
  * The above will assume the 'default' configuration from the APPPATH/config/mongo.php file.
@@ -154,13 +154,13 @@ class Database
 
     /** The Mongo server connection
      *
-     * @var  MongoClient
+     * @var  Client
      */
     protected $_connection;
 
     /** The database instance for the database name chosen by the config
      *
-     * @var  MongoDB
+     * @var  Client
      */
     protected $_db;
 
@@ -169,24 +169,6 @@ class Database
      * @var string
      */
     protected $_collection_class;
-
-    /** A flag to indicate if profiling is enabled and to allow it to be enabled/disabled on the fly
-     *
-     * @var  boolean
-     */
-    public $profiling;
-
-    /** A callback called when profiling starts
-     *
-     * @var callback
-     */
-    protected $_start_callback = ['Profiler', 'start'];
-
-    /** A callback called when profiling stops
-     *
-     * @var callback
-     */
-    protected $_stop_callback = ['Profiler', 'stop'];
 
     /**
      * This cannot be called directly, use Database::instance() instead to get an instance of this class.
@@ -227,7 +209,7 @@ class Database
 
         $connection_string .= "/{$config['database']}";
 
-        $this->_connection = new MongoClient($connection_string, $options);
+        $this->_connection = new Client($connection_string, $options);
 
         // Save the database name for later use
         $this->_db = $config['database'];
@@ -268,9 +250,8 @@ class Database
     public function connect()
     {
         if (!$this->_connected) {
-            $this->_connected = $this->_connection->connect();
-
-            $this->_db = $this->_connection->selectDB("$this->_db");
+            $this->_connected = true;
+            $this->_db        = $this->_connection->selectDatabase("$this->_db");
         }
 
         return $this->_connected;
@@ -284,8 +265,8 @@ class Database
     public function close()
     {
         if ($this->_connected) {
-            $this->_connected = $this->_connection->close();
             $this->_db        = "$this->_db";
+            $this->_connected = false;
         }
 
         return $this->_connected;
@@ -354,9 +335,10 @@ class Database
      */
     public function execute_safe($code, array $args = [], $scope = [])
     {
-        if (!$code instanceof MongoCode) {
-            $code = new MongoCode($code, $scope);
+        if (!$code instanceof Javascript) {
+            $code = new Javascript($code, $scope);
         }
+
         $result = $this->execute($code, $args);
         if (empty($result['ok'])) {
             throw new MongoException($result['errmsg'], $result['errno']);

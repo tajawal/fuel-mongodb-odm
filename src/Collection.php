@@ -3,13 +3,13 @@
 namespace Tajawal\MongoOdm;
 
 use Exception;
-use MongoCode;
 use MongoCollection;
 use MongoConnectionException;
 use MongoCursor;
 use MongoCursorException;
+use MongoDB\BSON\Javascript;
 use MongoException;
-use MongoId;
+use MongoDB\BSON\ObjectID;
 
 /**
  * This class can be used in any of the following ways:
@@ -57,7 +57,7 @@ use MongoId;
  * @method string getName()
  * @method array getReadPreference()
  * @method bool getSlaveOkay()
- * @method array group(mixed $keys, array $initial, MongoCode $reduce, array $options = [])
+ * @method array group(mixed $keys, array $initial, Javascript $reduce, array $options = [])
  * @method bool|array insert(array $data, array $options = [])
  * @method bool|array remove(array $criteria = [], array $options = [])
  * @method mixed save(array $a, array $options = [])
@@ -261,7 +261,7 @@ class Collection implements \Iterator, \Countable
      * @param   mixed $query An array of parameters or a key
      * @param   mixed $value If $query is a key, this is the value
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      * @throws \MongoException
      */
@@ -313,7 +313,7 @@ class Collection implements \Iterator, \Countable
      * @param   array    $fields
      * @param   int|bool $include
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      */
     public function fields($fields = [], $include = 1)
@@ -410,7 +410,7 @@ class Collection implements \Iterator, \Countable
      * @param   array|string $fields    A sort criteria or a key (requires corresponding $value)
      * @param   string|int   $direction The direction if $fields is a key
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      */
     public function sort($fields, $direction = self::ASC)
@@ -516,7 +516,7 @@ class Collection implements \Iterator, \Countable
      * @param  string $name
      * @param  mixed  $value
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      * @throws \MongoException
      */
@@ -549,7 +549,7 @@ class Collection implements \Iterator, \Countable
      *
      * @param  string $name
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      * @throws \MongoException
      */
@@ -596,7 +596,7 @@ class Collection implements \Iterator, \Countable
      * Instantiates a cursor, after this is called the query cannot be modified.
      * This is automatically called when the iterator initializes (rewind).
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \MongoCursorException
      * @throws \MongoException
      */
@@ -690,10 +690,10 @@ class Collection implements \Iterator, \Countable
     /**
      * Perform a group aggregation and return the result or throw an exception on error
      *
-     * @param string|array     $keys
-     * @param array            $initial
-     * @param string|MongoCode $reduce
-     * @param array            $options
+     * @param string|array      $keys
+     * @param array             $initial
+     * @param string|Javascript $reduce
+     * @param array             $options
      *
      * @return mixed
      * @throws \Exception
@@ -705,8 +705,8 @@ class Collection implements \Iterator, \Countable
         if (is_string($keys)) {
             $keys = [$keys => 1];
         }
-        if (!$reduce instanceof MongoCode) {
-            $reduce = new MongoCode($reduce);
+        if (!$reduce instanceof Javascript) {
+            $reduce = new Javascript($reduce);
         }
         $result = $this->__call('group', [$keys, $initial, $reduce, $options]);
         if (empty($result['ok'])) {
@@ -729,7 +729,7 @@ class Collection implements \Iterator, \Countable
      * @param array $update
      * @param array $options
      *
-     * @return bool|int|MongoId
+     * @return bool|int|ObjectID
      * @throws MongoException on error
      */
     public function update_safe($criteria, $update, $options = [])

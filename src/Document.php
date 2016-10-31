@@ -4,8 +4,8 @@ namespace Tajawal\MongoOdm;
 
 use Exception;
 use MongoConnectionException;
+use MongoDB\BSON\ObjectID;
 use MongoException;
-use MongoId;
 
 /**
  * This class objectifies a Mongo document and can be used with one of the following design patterns:
@@ -50,7 +50,7 @@ use MongoId;
  * Aliases can be used anywhere that a field name can be used including dot-notation for nesting.
  *
  * <code>
- *   $id = $document->id;  // MongoId
+ *   $id = $document->id;  // ObjectID
  * </code>
  *
  * All methods that take query parameters support JSON strings as input in addition to PHP arrays. The JSON parser is
@@ -80,20 +80,20 @@ use MongoId;
  *   $doc = new Model_Document($id);
  * </code>
  *
- * Atomic operations and updates are not executed until save() is called and operations are chainable. Example:
+ * Atomic operations and updates are not executed until save() is called and operations are chain-able. Example:
  *
  * <code>
- *   $doc->inc('uses.boing');
- *       ->push('used',array('type' => 'sound', 'desc' => 'boing'));
+ *   $doc->inc('uses.boeing');
+ *       ->push('used',array('type' => 'sound', 'desc' => 'being'));
  *   $doc->inc('uses.bonk');
  *       ->push('used',array('type' => 'sound', 'desc' => 'bonk'));
  *       ->save();
  *   // db.test.update(
  *   //   {"_id":"one"},
  *   //   {"$inc":
- *   //     {"uses.boing":1,"uses.bonk":1},
+ *   //     {"uses.boeing":1,"uses.bonk":1},
  *   //    "$pushAll":
- *   //     {"used":[{"type":"sound","desc":"boing"},{"type":"sound","desc":"bonk"}]}
+ *   //     {"used":[{"type":"sound","desc":"boeing"},{"type":"sound","desc":"bonk"}]}
  *   //   }
  *   // );
  * </code>
@@ -149,6 +149,8 @@ use MongoId;
  * </code>
  *
  * @author  Colin Mollenhour
+ * @property ObjectID _id
+ * @property ObjectID id
  * @package MongoOdm
  */
 abstract class Document
@@ -164,7 +166,7 @@ abstract class Document
      * @param   string $name model name
      * @param   mixed  $load optional _id of document to operate on or criteria for loading (if you expect it exists)
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public static function factory($name, $load = null)
     {
@@ -290,7 +292,7 @@ abstract class Document
 
     /**
      * Instantiate a new Document object. If an id or other data is passed then it will be assumed that the
-     * document exists in the database and updates will be performaed without loading the document first.
+     * document exists in the database and updates will be performed without loading the document first.
      *
      * @param   string $id The _id of the document to operate on or criteria used to load
      */
@@ -313,15 +315,15 @@ abstract class Document
      * @param  string $field The field name being set
      * @param  mixed  $value The value being set
      *
-     * @return mixed|MongoId
+     * @return mixed|ObjectID
      */
     protected function _cast($field, $value)
     {
         switch ($field) {
             case '_id':
-                // Cast _id strings to MongoIds if they convert back and forth without changing
+                // Cast _id strings to ObjectIDs if they convert back and forth without changing
                 if (is_string($value) && strlen($value) == 24) {
-                    $id = new MongoId($value);
+                    $id = new ObjectID($value);
                     if ((string)$id == $value)
                         return $id;
                 }
@@ -335,7 +337,7 @@ abstract class Document
     /**
      * This function translates an alias to a database field name.
      * Aliases are defined in $this->_aliases, and id is always aliased to _id.
-     * You can override this to disable alises or define your own aliasing technique.
+     * You can override this to disable aliases or define your own aliasing technique.
      *
      * @param   string  $name        The aliased field name
      * @param   boolean $dot_allowed Use FALSE if a dot is not allowed in the field name for better performance
@@ -386,7 +388,7 @@ abstract class Document
     /**
      * Unset a field
      *
-     * @return  void
+     * @param $name
      */
     public function __unset($name)
     {
@@ -396,7 +398,7 @@ abstract class Document
     /**
      * Clear the document data
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function clear()
     {
@@ -427,7 +429,7 @@ abstract class Document
     /**
      * Return the MongoOdm\Database reference (proxy to the collection's db() method)
      *
-     * @return  \MongoOdm\Database
+     * @return  \Tajawal\MongoOdm\Database
      */
     public function db()
     {
@@ -488,7 +490,7 @@ abstract class Document
      * @param  string $name
      * @param  array  $arguments
      *
-     * @return \MongoOdm\Collection
+     * @return \Tajawal\MongoOdm\Collection
      * @throws \Exception
      * @throws \MongoCursorException
      * @throws \MongoException
@@ -664,7 +666,7 @@ abstract class Document
      *
      * @param   string $name The key of the data to update (use dot notation for embedded objects)
      *
-     * @return \MongoOdm\Document
+     * @return \Tajawal\MongoOdm\Document
      */
     public function _unset($name)
     {
@@ -680,7 +682,7 @@ abstract class Document
      * @param   string $name  The key of the data to update (use dot notation for embedded objects)
      * @param   mixed  $value The amount to increment by (default is 1)
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function inc($name, $value = 1)
     {
@@ -695,12 +697,12 @@ abstract class Document
     }
 
     /**
-     * Push a vlaue to an array atomically. Can be called multiple times.
+     * Push a value to an array atomically. Can be called multiple times.
      *
      * @param   string $name  The key of the data to update (use dot notation for embedded objects)
      * @param   mixed  $value The value to push
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function push($name, $value)
     {
@@ -725,7 +727,7 @@ abstract class Document
      * @param   string $name  The key of the data to update (use dot notation for embedded objects)
      * @param   array  $value An array of values to push
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function push_all($name, $value)
     {
@@ -744,7 +746,7 @@ abstract class Document
      *
      * @param   string $name The key of the data to update (use dot notation for embedded objects)
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function pop($name)
     {
@@ -759,7 +761,7 @@ abstract class Document
      *
      * @param   string $name The key of the data to update (use dot notation for embedded objects)
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function shift($name)
     {
@@ -775,7 +777,7 @@ abstract class Document
      * @param   string $name The key of the data to update (use dot notation for embedded objects)
      * @param   mixed  $value
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function pull($name, $value)
     {
@@ -800,7 +802,7 @@ abstract class Document
      * @param   string $name  The key of the data to update (use dot notation for embedded objects)
      * @param   array  $value An array of value to pull from the array
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function pull_all($name, $value)
     {
@@ -821,7 +823,7 @@ abstract class Document
      *
      * @param          $value
      *
-     * @return \MongoOdm\Document
+     * @return \Tajawal\MongoOdm\Document
      */
     public function bit($name, $value)
     {
@@ -837,7 +839,7 @@ abstract class Document
      * @param   string $name  The key of the data to update (use dot notation for embedded objects)
      * @param   mixed  $value The value to add to the set
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function add_to_set($name, $value)
     {
@@ -867,7 +869,7 @@ abstract class Document
      * @param   array   $values field => value pairs
      * @param   boolean $clean  values are clean (from database)?
      *
-     * @return  \MongoOdm\Document
+     * @return  \Tajawal\MongoOdm\Document
      */
     public function load_values($values, $clean = false)
     {
@@ -931,7 +933,7 @@ abstract class Document
     /**
      * Load the document from the database. The first parameter may be one of:
      *
-     *  a falsey value - the object data will be used to construct the query
+     *  a false-y value - the object data will be used to construct the query
      *  a JSON string - will be parsed and used for the query
      *  an non-array value - the query will be assumed to be for an _id of this value
      *  an array - the array will be used for the query
@@ -991,7 +993,7 @@ abstract class Document
      *
      * @param   boolean $safe If FALSE the insert status will not be checked
      *
-     * @return \MongoOdm\Document
+     * @return \Tajawal\MongoOdm\Document
      * @throws \MongoConnectionException
      * @throws \MongoException
      */
@@ -1022,7 +1024,7 @@ abstract class Document
             }
 
             if (!isset($this->_object['_id'])) {
-                // Store (assigned) MongoID in object
+                // Store (assigned) ObjectID in object
                 $this->_object['_id'] = $values['_id'];
                 $this->_loaded        = true;
             }
@@ -1031,7 +1033,7 @@ abstract class Document
             /** @todo  Combine operations into the insert when possible to avoid this update */
             if ($this->_operations) {
                 if (!$this->collection()->update(['_id' => $this->_object['_id']], $this->_operations)) {
-                    $err = $this->db()->last_error();
+                    $err = $this->db()->lastError();
                     throw new MongoException('Update of ' . get_class($this) . ' failed: ' . $err['err']);
                 }
             }
@@ -1050,7 +1052,7 @@ abstract class Document
 
             if ($this->_operations) {
                 if (!$this->collection()->update(['_id' => $this->_object['_id']], $this->_operations)) {
-                    $err = $this->db()->last_error();
+                    $err = $this->db()->lastError();
                     throw new MongoException('Update of ' . get_class($this) . ' failed: ' . $err['err']);
                 }
             }
@@ -1127,7 +1129,8 @@ abstract class Document
      *
      * @param   array $operations
      *
-     * @return  \MongoOdm\Document
+     * @return \Tajawal\MongoOdm\Document
+     * @throws \MongoException
      */
     public function upsert($operations = [])
     {
@@ -1140,13 +1143,13 @@ abstract class Document
         $operations = self::array_merge_recursive_distinct($this->_operations, $operations);
 
         if (!$this->collection()->update($this->_object, $operations, ['upsert' => true])) {
-            $err = $this->db()->last_error();
+            $err = $this->db()->lastError();
             throw new MongoException('Upsert of ' . get_class($this) . ' failed: ' . $err['err']);
         }
 
         $this->_changed = $this->_operations = [];
 
-        $this->after_save();
+        $this->after_save(self::SAVE_UPSERT);
 
         return $this;
     }
@@ -1155,7 +1158,8 @@ abstract class Document
      * Delete the current document using the current data. The document does not have to be loaded.
      * Use $doc->collection()->remove($criteria) to delete multiple documents.
      *
-     * @return  \MongoOdm\Document
+     * @return \Tajawal\MongoOdm\Document
+     * @throws \MongoException
      */
     public function delete()
     {
@@ -1170,7 +1174,7 @@ abstract class Document
         }
 
         $this->clear();
-        $this->after_delete(self::SAVE_UPSERT);
+        $this->after_delete();
 
         return $this;
     }
