@@ -1,6 +1,6 @@
 <?php
 
-namespace MongoOdm;
+namespace Tajawal\MongoOdm;
 
 /**
  * Class Config
@@ -38,7 +38,7 @@ class Config
     /**
      * @param string $host
      *
-     * @return Config
+     * @return \Tajawal\MongoOdm\Config
      */
     public function setHost($host)
     {
@@ -58,7 +58,7 @@ class Config
     /**
      * @param string $port
      *
-     * @return Config
+     * @return \Tajawal\MongoOdm\Config
      */
     public function setPort($port)
     {
@@ -78,7 +78,7 @@ class Config
     /**
      * @param string $database
      *
-     * @return Config
+     * @return \Tajawal\MongoOdm\Config
      */
     public function setDatabase($database)
     {
@@ -98,7 +98,7 @@ class Config
     /**
      * @param string $username
      *
-     * @return Config
+     * @return \Tajawal\MongoOdm\Config
      */
     public function setUsername($username)
     {
@@ -118,7 +118,7 @@ class Config
     /**
      * @param string $password
      *
-     * @return Config
+     * @return \Tajawal\MongoOdm\Config
      */
     public function setPassword($password)
     {

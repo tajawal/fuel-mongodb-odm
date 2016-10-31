@@ -1,4 +1,12 @@
 <?php
+
+namespace Tajawal\MongoOdm;
+
+use Exception;
+use MongoConnectionException;
+use MongoException;
+use MongoId;
+
 /**
  * This class objectifies a Mongo document and can be used with one of the following design patterns:
  *
@@ -141,19 +149,6 @@
  * </code>
  *
  * @author  Colin Mollenhour
- * @package MongoOdm
- */
-
-namespace MongoOdm;
-
-use Exception;
-use MongoConnectionException;
-use MongoException;
-use MongoId;
-
-/**
- * Class Document
- *
  * @package MongoOdm
  */
 abstract class Document

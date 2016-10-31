@@ -1,6 +1,6 @@
 <?php
 
-namespace MongoOdm;
+namespace Tajawal\MongoOdm;
 
 use Exception;
 use MongoClient;
@@ -96,11 +96,11 @@ class Database
      *  database    *required* The database name to use for this instance
      * </pre>
      *
-     * @param   string         $name The configuration name
+     * @param   string                 $name The configuration name
      *
-     * @param \MongoOdm\Config $config
+     * @param \Tajawal\MongoOdm\Config $config
      *
-     * @return \MongoOdm\Database
+     * @return \Tajawal\MongoOdm\Database
      * @throws \Exception
      * @static
      */

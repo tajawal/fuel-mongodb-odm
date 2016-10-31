@@ -2,6 +2,7 @@
   "name": "tajawal/mongo-odm",
   "description": "An ODM for Mongo DB.",
   "require": {
+    "mongodb/mongodb": "^1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.6"

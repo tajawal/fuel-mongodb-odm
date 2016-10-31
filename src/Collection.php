@@ -1,6 +1,6 @@
 <?php
 
-namespace MongoOdm;
+namespace Tajawal\MongoOdm;
 
 use Exception;
 use MongoCode;
